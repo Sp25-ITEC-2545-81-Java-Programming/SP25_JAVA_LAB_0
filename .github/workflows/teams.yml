@@ -1,0 +1,20 @@
+name: Notifications
+
+on: [push]
+
+jobs:
+  slackNotification:
+    name: Teams Notification
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: notify-microsoft-teams
+      uses: Skitionek/notify-microsoft-teams@v1.0.8
+      env:
+        if: always()
+        with:
+          webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
+          needs: ${{ toJson(needs) }}
+          job: ${{ toJson(job) }}
+          steps: ${{ toJson(steps) }}
+          dry_run: True
