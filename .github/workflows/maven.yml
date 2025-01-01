@@ -15,3 +15,13 @@ jobs:
           java-version: 23
       - name: Test with Maven
         run: mvn test
+      - uses: actions/checkout@master
+      - name: notify-microsoft-teams
+        uses: Skitionek/notify-microsoft-teams@v1.0.8
+        if: always()
+        with:
+          webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
+          needs: ${{ toJson(needs) }}
+          job: ${{ toJson(job) }}
+          steps: ${{ toJson(steps) }}
+          dry_run: False
